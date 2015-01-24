@@ -1,0 +1,16 @@
+name: TitansAndKings
+main: me.supernova1992.TitansAndKings
+version: 0.1.5
+commands:
+    initialize:
+        description: Start the gamemode and set up the scoreboard.
+        usage: /<command>
+    titan:
+        description: Join the titan team.
+        usage: /<command>
+    king:
+        description: Join the king team.
+        usage: /<command>
+    leave:
+        description: Leave the team.
+        usage: /<command>
