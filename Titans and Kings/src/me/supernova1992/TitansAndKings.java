@@ -48,6 +48,16 @@ public class TitansAndKings extends JavaPlugin {
 		return tVsK;
 		
 	}
+	
+	public static Score getKg(){
+		
+		return kg;
+	}
+	
+	public static Score getTn(){
+		
+		return tn;
+	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		
 		
