@@ -75,11 +75,13 @@ public class PlayerListener implements Listener{
 				
 				Team dteam = tVsK.getPlayerTeam(damaged);
 				
+				Team titans = tVsK.getTeam("Titans");
+				
 				if (dam == DamageCause.ENTITY_ATTACK){
 					//ItemStack hold = ((HumanEntity) player).getInventory().getItemInHand();
 					ItemStack eb = new ItemStack(Material.BOOK);
 					
-					if(((HumanEntity) player).getItemInHand().equals(eb) && dteam.equals("titans")){
+					if(((HumanEntity) player).getItemInHand().equals(eb) && dteam.equals(titans)){
 						
 						e.setCancelled(false);
 						
