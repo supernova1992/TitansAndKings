@@ -85,18 +85,9 @@ public class PlayerListener implements Listener{
 						
 						e.setCancelled(false);
 						
-						player.sendMessage("Hit Detected");
-						
-						Score tn = TitansAndKings.getTn();
-						
-						Score kg = TitansAndKings.getKg();
-						
-						int kgnum = kg.getScore();
-						
-						kg.setScore(kgnum + 1);
-						
 		
 					}else{
+						
 						e.setCancelled(true);
 						
 					}
