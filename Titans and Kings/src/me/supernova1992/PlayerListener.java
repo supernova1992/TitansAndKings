@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R1.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -15,8 +16,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerEggThrowEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -51,8 +55,23 @@ public class PlayerListener implements Listener{
 			
 			Player player = e.getPlayer();
 			
-			player.sendMessage(ChatColor.RED + "DO NOT THROW EGGS!");
+			/*e.setHatchingType(EntityType.ZOMBIE);
+			e.setHatching(true);*/
 			
+		}
+		
+		@EventHandler
+		public void onItemUse(PlayerInteractEvent e){
+			
+			Player player = e.getPlayer();
+			
+			Material hold = player.getItemInHand().getType();
+			
+			if(hold == Material.RABBIT_FOOT){
+				
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 500, 1));
+				
+			}
 			
 		}
 		
@@ -63,6 +82,10 @@ public class PlayerListener implements Listener{
 			
 			Scoreboard tVsK = TitansAndKings.getTVsK();
 			
+			if(e.getEntity() instanceof Player && tVsK.getPlayerTeam((Player) e.getEntity()).equals(tVsK.getTeam("Titans")) && !(e.getDamager() instanceof Player)){
+				
+				e.setCancelled(true);
+			}
 			
 			
 			if(e.getDamager() instanceof Player && e.getEntity() instanceof Player){

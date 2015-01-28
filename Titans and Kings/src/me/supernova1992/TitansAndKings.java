@@ -3,9 +3,14 @@ package me.supernova1992;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -109,6 +114,13 @@ public class TitansAndKings extends JavaPlugin {
 			player.sendMessage(ChatColor.RED + "You have joined the Titan team.");
 			
 			player.setMaxHealth(2);
+			
+			PlayerInventory inventory = player.getInventory();
+			
+			inventory.addItem(new ItemStack(Material.MONSTER_EGG, 16, (short) 54));
+			inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
+			
+			
 			
 			return true;
 			
