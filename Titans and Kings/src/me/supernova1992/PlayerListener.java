@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -72,6 +73,14 @@ public class PlayerListener implements Listener{
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 500, 1));
 				
 			}
+			if(hold == Material.BLAZE_POWDER){
+				
+				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 500, 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 500, 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 500, 1));
+
+
+			}
 			
 		}
 		
@@ -109,9 +118,12 @@ public class PlayerListener implements Listener{
 						e.setCancelled(false);
 						
 		
-					}else{
+					}
+					if(!(((HumanEntity) player).getItemInHand().equals(eb))){
 						
 						e.setCancelled(true);
+						
+						damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 17, 1));
 						
 					}
 					
@@ -123,5 +135,30 @@ public class PlayerListener implements Listener{
 			
 		}
 	
+		@EventHandler
+		public void checkZTarget(EntityTargetLivingEntityEvent e){
+			
+			if(e.getTarget() instanceof Player){
+				Player player = (Player) e.getTarget();
+				
+				Scoreboard tVsK = TitansAndKings.getTVsK();
+				
+				Team pteam = tVsK.getPlayerTeam(player);				
+				
+				Team titans = tVsK.getTeam("Titans");
+			
+				if(pteam == titans){
+					
+					e.setCancelled(true);
+				}
+			
+			}
+			
+			
+			
+			
+		}
+
 }
+
 

@@ -114,6 +114,7 @@ public class TitansAndKings extends JavaPlugin {
 			player.sendMessage(ChatColor.RED + "You have joined the Titan team.");
 			
 			player.setMaxHealth(2);
+		
 			
 			PlayerInventory inventory = player.getInventory();
 			
@@ -136,6 +137,19 @@ public class TitansAndKings extends JavaPlugin {
 			
 			player.setMaxHealth(40);
 			
+			player.setHealth(40);
+			
+			PlayerInventory inventory = player.getInventory();
+			
+			inventory.addItem(new ItemStack(Material.BLAZE_POWDER, 6));
+			inventory.addItem(new ItemStack(Material.BOOK, 1));
+			inventory.addItem(new ItemStack(Material.ARROW, 64));
+			inventory.addItem(new ItemStack(Material.BOW, 1));
+			inventory.addItem(new ItemStack(Material.GOLD_HELMET, 1));
+			inventory.addItem(new ItemStack(Material.GOLD_BOOTS, 1));
+			inventory.addItem(new ItemStack(Material.GOLD_CHESTPLATE, 1));
+			inventory.addItem(new ItemStack(Material.GOLD_LEGGINGS, 1));
+			
 			return true;
 			
 		}
@@ -144,27 +158,35 @@ public class TitansAndKings extends JavaPlugin {
 			
 			Player player = (Player) sender;
 			
-			player.setMaxHealth(20);
-			
 			Team leave = tVsK.getPlayerTeam(player);
 			
-			if(leave.equals(titans)){
+			if(leave==null){
+				
+				player.sendMessage(ChatColor.RED + "You are not on a team, or the game has encountered an error. Please message an Admin.");
+			}
+			
+			
+			if(leave.equals(titans) && leave != null){
 			
 				titans.removePlayer(player);
 			
-				player.sendMessage(ChatColor.RED + "You have left the team");
+				player.sendMessage(ChatColor.RED + "You have left the Titan team");
+				
+				player.setMaxHealth(20);
+				
+				player.setHealth(20);
 			
 			}
-			if(leave.equals(kings)){
+			if(leave.equals(kings) && leave != null){
 				
 				kings.removePlayer(player);
 				
-				player.sendMessage(ChatColor.RED + "You have left the team");
+				player.sendMessage(ChatColor.RED + "You have left the King team");
 				
-			}
-			if(leave.equals(null)){
+				player.setMaxHealth(20);
 				
-				player.sendMessage(ChatColor.RED + "You are not on a team, or the game has encountered an error. Please message an Admin.");
+				player.setHealth(20);
+				
 			}
 			
 			return true;
