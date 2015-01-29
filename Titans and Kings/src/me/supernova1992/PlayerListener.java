@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Objective;
@@ -68,9 +69,13 @@ public class PlayerListener implements Listener{
 			
 			Material hold = player.getItemInHand().getType();
 			
+			PlayerInventory inventory = player.getInventory();
+			
 			if(hold == Material.RABBIT_FOOT){
 				
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 500, 1));
+				
+				inventory.removeItem(new ItemStack(Material.RABBIT_FOOT, 1));
 				
 			}
 			if(hold == Material.BLAZE_POWDER){
@@ -78,7 +83,8 @@ public class PlayerListener implements Listener{
 				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 500, 1));
 				player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 500, 1));
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 500, 1));
-
+				
+				inventory.removeItem(new ItemStack(Material.BLAZE_POWDER, 1));
 
 			}
 			
@@ -118,14 +124,17 @@ public class PlayerListener implements Listener{
 						e.setCancelled(false);
 						
 		
-					}
-					if(!(((HumanEntity) player).getItemInHand().equals(eb))){
+					}else{
+						
+						damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 50, 1));
 						
 						e.setCancelled(true);
-						
-						damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 17, 1));
-						
 					}
+					
+					
+				}
+				
+				
 					
 				}
 				
@@ -133,7 +142,7 @@ public class PlayerListener implements Listener{
 			
 			
 			
-		}
+		
 	
 		@EventHandler
 		public void checkZTarget(EntityTargetLivingEntityEvent e){
@@ -158,7 +167,18 @@ public class PlayerListener implements Listener{
 			
 			
 		}
-
+		@EventHandler
+		public void onFallDam(EntityDamageEvent e){
+			
+			Player player = (Player) e.getEntity();
+			
+			if(player instanceof Player && e.getCause().equals(DamageCause.FALL)){
+				
+				e.setCancelled(true);
+				
+			}
+			
+		}
 }
 
 
