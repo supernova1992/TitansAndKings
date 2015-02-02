@@ -8,6 +8,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentWrapper;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -107,21 +110,35 @@ public class TitansAndKings extends JavaPlugin {
 			
 			/*Team titans = tVsK.getTeam("Titans");*/
 			
+			Team pteam = tVsK.getPlayerTeam(player);
 			
-			titans.addPlayer(player);
+			if(pteam == null){
+				titans.addPlayer(player);
+				
+				String pname = player.getPlayerListName();
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " tvk");
+				
+				player.sendMessage(ChatColor.RED + "You have joined the Titan team.");
+				
+				player.setMaxHealth(2);
 			
-			
-			player.sendMessage(ChatColor.RED + "You have joined the Titan team.");
-			
-			player.setMaxHealth(2);
-		
-			
-			PlayerInventory inventory = player.getInventory();
-			
-			inventory.addItem(new ItemStack(Material.MONSTER_EGG, 16, (short) 54));
-			inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
-			
-			
+				
+				PlayerInventory inventory = player.getInventory();
+				
+				inventory.addItem(new ItemStack(Material.MONSTER_EGG, 16, (short) 54));
+				inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
+				inventory.addItem(new ItemStack(Material.COOKED_BEEF, 64));
+				inventory.addItem(new ItemStack(Material.POTION, 16, (short) 16396));
+				
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 2 "+ pname);
+			}else{
+				player.sendMessage(ChatColor.RED + "You are already on a team. To change teams use /leave and either /titan or /king");
+				
+			}
 			
 			return true;
 			
@@ -131,25 +148,47 @@ public class TitansAndKings extends JavaPlugin {
 			
 			Player player = (Player) sender;
 			
-			kings.addPlayer(player);
-			
-			player.sendMessage(ChatColor.RED + "You have joined the King team.");
-			
-			player.setMaxHealth(40);
-			
-			player.setHealth(40);
-			
-			PlayerInventory inventory = player.getInventory();
-			
-			inventory.addItem(new ItemStack(Material.BLAZE_POWDER, 6));
-			inventory.addItem(new ItemStack(Material.BOOK, 1));
-			inventory.addItem(new ItemStack(Material.ARROW, 64));
-			inventory.addItem(new ItemStack(Material.BOW, 1));
-			inventory.addItem(new ItemStack(Material.GOLD_HELMET, 1));
-			inventory.addItem(new ItemStack(Material.GOLD_BOOTS, 1));
-			inventory.addItem(new ItemStack(Material.GOLD_CHESTPLATE, 1));
-			inventory.addItem(new ItemStack(Material.GOLD_LEGGINGS, 1));
-			
+			Team pteam = tVsK.getPlayerTeam(player);
+			if(pteam == null){
+				kings.addPlayer(player);
+				
+				String pname = player.getPlayerListName();
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " tvk");
+				
+				player.sendMessage(ChatColor.RED + "You have joined the King team.");
+				
+				player.setMaxHealth(40);
+				
+				player.setHealth(40);
+				
+				ItemStack bow = new ItemStack(Material.BOW, 1);
+				
+				Enchantment infinity = new EnchantmentWrapper(51);
+				
+				bow.addEnchantment(infinity, 1);
+				
+				PlayerInventory inventory = player.getInventory();
+				
+				inventory.addItem(new ItemStack(Material.BLAZE_POWDER, 6));
+				inventory.addItem(new ItemStack(Material.BOOK, 1));
+				inventory.addItem(new ItemStack(Material.ARROW, 1));
+				inventory.addItem(bow);
+				inventory.addItem(new ItemStack(Material.GOLD_HELMET, 1));
+				inventory.addItem(new ItemStack(Material.GOLD_BOOTS, 1));
+				inventory.addItem(new ItemStack(Material.GOLD_CHESTPLATE, 1));
+				inventory.addItem(new ItemStack(Material.GOLD_LEGGINGS, 1));
+				inventory.addItem(new ItemStack(Material.COOKED_BEEF, 64));
+				inventory.addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+				
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 94 70 184");
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 2 "+ pname);
+			}else{
+				
+				player.sendMessage(ChatColor.RED + "You are already on a team. To change teams use /leave and either /titan or /king");
+				
+			}
 			return true;
 			
 		}
@@ -168,24 +207,47 @@ public class TitansAndKings extends JavaPlugin {
 			
 			if(leave.equals(titans) && leave != null){
 			
-				titans.removePlayer(player);
-			
-				player.sendMessage(ChatColor.RED + "You have left the Titan team");
+				PlayerInventory inventory = player.getInventory();
+				
+				inventory.clear();
 				
 				player.setMaxHealth(20);
 				
 				player.setHealth(20);
+				
+				String pname = player.getPlayerListName();
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " world");
+				
+				titans.removePlayer(player);
+			
+				player.sendMessage(ChatColor.RED + "You have left the Titan team");
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
+				
+				
+				
 			
 			}
 			if(leave.equals(kings) && leave != null){
+				
+				PlayerInventory inventory = player.getInventory();
+				
+				inventory.clear();
+				
+				player.setMaxHealth(20);
+				
+				player.setHealth(20);
+				
+				
+				String pname = player.getPlayerListName();
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " world");
 				
 				kings.removePlayer(player);
 				
 				player.sendMessage(ChatColor.RED + "You have left the King team");
 				
-				player.setMaxHealth(20);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
 				
-				player.setHealth(20);
 				
 			}
 			
