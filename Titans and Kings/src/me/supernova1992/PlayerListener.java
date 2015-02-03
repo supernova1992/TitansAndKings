@@ -240,9 +240,13 @@ public class PlayerListener implements Listener{
 			
 			Team kings = tVsK.getTeam("Kings");
 			
+			if(pteam == null){
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tell " + pname + " Welcome back");
+				
+			}
 			
-			
-			if(pteam.equals(titans) && pteam != null){
+			if(pteam.equals(titans)){
 				
 				PlayerInventory inventory = player.getInventory();
 				
@@ -254,7 +258,7 @@ public class PlayerListener implements Listener{
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");
 				
 			}
-			if(pteam.equals(kings) && pteam != null){
+			if(pteam.equals(kings)){
 				
 				ItemStack bow = new ItemStack(Material.BOW, 1);
 				
@@ -286,9 +290,13 @@ public class PlayerListener implements Listener{
 			
 			Player player = e.getEntity().getPlayer();
 			
+			World world = player.getWorld();
+			
+			World tvk = Bukkit.getWorld("tvk");
+			
 			String pname = player.getPlayerListName();
 			
-			Player killer = e.getEntity().getKiller();
+			//Player killer = e.getEntity().getKiller();
 			
 			Scoreboard tVsK = TitansAndKings.getTVsK();
 			
@@ -302,7 +310,13 @@ public class PlayerListener implements Listener{
 			
 			Score tn = TitansAndKings.getTn();
 			
-			if(pteam.equals(titans) && pteam != null){
+			if(pteam == null){
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tell " + pname + " Hey, you died.");
+				
+			}
+			
+			if(pteam.equals(titans)){
 				
 				e.setKeepInventory(true);
 				
@@ -323,7 +337,7 @@ public class PlayerListener implements Listener{
 				
 			}
 			
-			if(pteam.equals(kings) && pteam != null){
+			if(pteam.equals(kings)){
 				
 				e.setKeepInventory(true);
 				
