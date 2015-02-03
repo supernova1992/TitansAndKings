@@ -5,6 +5,7 @@ import net.minecraft.server.v1_8_R1.PlayerConnection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Arrow;
@@ -239,7 +240,9 @@ public class PlayerListener implements Listener{
 			
 			Team kings = tVsK.getTeam("Kings");
 			
-			if(pteam.equals(titans)){
+			
+			
+			if(pteam.equals(titans) && pteam != null){
 				
 				PlayerInventory inventory = player.getInventory();
 				
@@ -251,7 +254,7 @@ public class PlayerListener implements Listener{
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");
 				
 			}
-			if(pteam.equals(kings)){
+			if(pteam.equals(kings) && pteam != null){
 				
 				ItemStack bow = new ItemStack(Material.BOW, 1);
 				
@@ -299,7 +302,7 @@ public class PlayerListener implements Listener{
 			
 			Score tn = TitansAndKings.getTn();
 			
-			if(pteam.equals(titans)){
+			if(pteam.equals(titans) && pteam != null){
 				
 				e.setKeepInventory(true);
 				
@@ -320,7 +323,7 @@ public class PlayerListener implements Listener{
 				
 			}
 			
-			if(pteam.equals(kings)){
+			if(pteam.equals(kings) && pteam != null){
 				
 				e.setKeepInventory(true);
 				
@@ -367,7 +370,12 @@ public class PlayerListener implements Listener{
 		
 		@EventHandler
 		public void onEntityCombust(EntityCombustEvent event){
-			if(event.getEntity() instanceof Zombie){
+			
+			World tvk = Bukkit.getServer().getWorld("tvk");
+			
+			World world = event.getEntity().getWorld();
+			
+			if(event.getEntity() instanceof Zombie && world.equals(tvk)){
 				
 				event.setCancelled(true);
 		 
