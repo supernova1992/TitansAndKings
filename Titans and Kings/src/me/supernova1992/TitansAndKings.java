@@ -1,5 +1,12 @@
 package me.supernova1992;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
@@ -130,6 +137,7 @@ public class TitansAndKings extends JavaPlugin {
 				inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
 				inventory.addItem(new ItemStack(Material.COOKED_BEEF, 64));
 				inventory.addItem(new ItemStack(Material.POTION, 16, (short) 16396));
+				inventory.addItem(new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
 				
 				
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");
@@ -253,7 +261,37 @@ public class TitansAndKings extends JavaPlugin {
 			
 			return true;
 		}
-		
+			if(cmd.getName().equalsIgnoreCase("tvkdp")){
+				
+				Player player = sender.getServer().getPlayer(args[0]);
+				
+				File file = new File("plugins"+File.separator+"TitansAndKings"+File.separator+"users"+File.separator+player.getDisplayName()+".yml");
+				
+				try {
+	                
+	                if(!(file.exists())){
+	                    file.createNewFile();
+	                }   
+	            } catch (IOException event) {
+	                event.printStackTrace();
+	            }
+				
+				Writer writer = null;
+				
+				try {
+					
+					writer = new BufferedWriter(new OutputStreamWriter(
+					          new FileOutputStream(file),"utf-8" ));
+					    writer.write(args[1]);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				} finally {
+				   try {writer.close();} catch (Exception ex) {}
+				}
+				
+				return true;
+				
+			}
 		return false;
 	}
 

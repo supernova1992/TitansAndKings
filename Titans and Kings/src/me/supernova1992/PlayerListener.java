@@ -1,9 +1,13 @@
 package me.supernova1992;
 
+import java.io.File;
+import java.io.IOException;
+
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R1.PlayerConnection;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
@@ -58,6 +62,15 @@ public class PlayerListener implements Listener{
 			
 			
 			player.setScoreboard(tVsK);
+			
+			try {
+                File file = new File("plugins"+File.separator+"TitansAndKings"+File.separator+"users"+File.separator+e.getPlayer().getName()+".yml");
+                if(!(file.exists())){
+                    file.createNewFile();
+                }   
+            } catch (IOException event) {
+                event.printStackTrace();
+            }
 				
 			
 		}
@@ -96,6 +109,19 @@ public class PlayerListener implements Listener{
 				inventory.removeItem(new ItemStack(Material.BLAZE_POWDER, 1));
 
 			}
+			if(hold == Material.SKULL_ITEM){
+				
+				World world = player.getWorld();
+				 
+				Location pLoc = player.getLocation();
+				
+				world.spawnEntity(pLoc, EntityType.GIANT);
+				
+				inventory.removeItem(new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
+				
+				e.setCancelled(true);
+				
+			}
 			
 		}
 		
@@ -106,7 +132,7 @@ public class PlayerListener implements Listener{
 			
 			Scoreboard tVsK = TitansAndKings.getTVsK();
 			
-			if (e.getDamager() instanceof Arrow){
+			if (e.getDamager() instanceof Arrow && e.getEntity() instanceof Player){
 				
 				/*ItemStack arrow = new ItemStack(Material.BOW);*/
 				
@@ -230,59 +256,64 @@ public class PlayerListener implements Listener{
 			
 			Player player = e.getPlayer();
 			
-			String pname = player.getPlayerListName();
+			World tvk = Bukkit.getWorld("tvk");
 			
-			Scoreboard tVsK = TitansAndKings.getTVsK();
+			if(player.getWorld().equals(tvk)){
 			
-			Team pteam = tVsK.getPlayerTeam(player);
-			
-			Team titans = tVsK.getTeam("Titans");
-			
-			Team kings = tVsK.getTeam("Kings");
-			
-			if(pteam == null){
+				String pname = player.getPlayerListName();
 				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tell " + pname + " Welcome back");
+				Scoreboard tVsK = TitansAndKings.getTVsK();
 				
+				Team pteam = tVsK.getPlayerTeam(player);
+				
+				Team titans = tVsK.getTeam("Titans");
+				
+				Team kings = tVsK.getTeam("Kings");
+				
+				if(pteam == null){
+					
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tell " + pname + " Welcome back");
+					
+				}
+				
+				if(pteam.equals(titans)){
+					
+					PlayerInventory inventory = player.getInventory();
+					
+					inventory.addItem(new ItemStack(Material.MONSTER_EGG, 16, (short) 54));
+					inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
+					inventory.addItem(new ItemStack(Material.COOKED_BEEF, 64));
+					inventory.addItem(new ItemStack(Material.POTION, 16, (short) 16396));
+					inventory.addItem(new ItemStack(Material.SKULL_ITEM, 1, (short) 2));
+					
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");
+					
+				}
+				if(pteam.equals(kings)){
+					
+					ItemStack bow = new ItemStack(Material.BOW, 1);
+					
+					Enchantment infinity = new EnchantmentWrapper(51);
+					
+					bow.addEnchantment(infinity, 1);
+					
+					PlayerInventory inventory = player.getInventory();
+					
+					inventory.addItem(new ItemStack(Material.BLAZE_POWDER, 6));
+					inventory.addItem(new ItemStack(Material.BOOK, 1));
+					inventory.addItem(new ItemStack(Material.ARROW, 1));
+					inventory.addItem(bow);
+					inventory.addItem(new ItemStack(Material.GOLD_HELMET, 1));
+					inventory.addItem(new ItemStack(Material.GOLD_BOOTS, 1));
+					inventory.addItem(new ItemStack(Material.GOLD_CHESTPLATE, 1));
+					inventory.addItem(new ItemStack(Material.GOLD_LEGGINGS, 1));
+					inventory.addItem(new ItemStack(Material.COOKED_BEEF, 64));
+					inventory.addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+					
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 94 64 181");
+					
+				}
 			}
-			
-			if(pteam.equals(titans)){
-				
-				PlayerInventory inventory = player.getInventory();
-				
-				inventory.addItem(new ItemStack(Material.MONSTER_EGG, 16, (short) 54));
-				inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
-				inventory.addItem(new ItemStack(Material.COOKED_BEEF, 64));
-				inventory.addItem(new ItemStack(Material.POTION, 16, (short) 16396));
-				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");
-				
-			}
-			if(pteam.equals(kings)){
-				
-				ItemStack bow = new ItemStack(Material.BOW, 1);
-				
-				Enchantment infinity = new EnchantmentWrapper(51);
-				
-				bow.addEnchantment(infinity, 1);
-				
-				PlayerInventory inventory = player.getInventory();
-				
-				inventory.addItem(new ItemStack(Material.BLAZE_POWDER, 6));
-				inventory.addItem(new ItemStack(Material.BOOK, 1));
-				inventory.addItem(new ItemStack(Material.ARROW, 1));
-				inventory.addItem(bow);
-				inventory.addItem(new ItemStack(Material.GOLD_HELMET, 1));
-				inventory.addItem(new ItemStack(Material.GOLD_BOOTS, 1));
-				inventory.addItem(new ItemStack(Material.GOLD_CHESTPLATE, 1));
-				inventory.addItem(new ItemStack(Material.GOLD_LEGGINGS, 1));
-				inventory.addItem(new ItemStack(Material.COOKED_BEEF, 64));
-				inventory.addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
-				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 94 64 181");
-				
-			}
-			
 		}
 		
 		@EventHandler
@@ -294,92 +325,98 @@ public class PlayerListener implements Listener{
 			
 			World tvk = Bukkit.getWorld("tvk");
 			
-			String pname = player.getPlayerListName();
+			if(world.equals(tvk)){
 			
-			//Player killer = e.getEntity().getKiller();
-			
-			Scoreboard tVsK = TitansAndKings.getTVsK();
-			
-			Team pteam = tVsK.getPlayerTeam(player);
-			
-			Team titans = tVsK.getTeam("Titans");
-			
-			Team kings = tVsK.getTeam("Kings");
-			
-			Score kg = TitansAndKings.getKg();
-			
-			Score tn = TitansAndKings.getTn();
-			
-			if(pteam == null){
+				String pname = player.getPlayerListName();
 				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tell " + pname + " Hey, you died.");
+				//Player killer = e.getEntity().getKiller();
 				
-			}
-			
-			if(pteam.equals(titans)){
+				Scoreboard tVsK = TitansAndKings.getTVsK();
 				
-				e.setKeepInventory(true);
+				Team pteam = tVsK.getPlayerTeam(player);
 				
-				PlayerInventory inventory = player.getInventory();
+				Team titans = tVsK.getTeam("Titans");
 				
-				inventory.clear();
+				Team kings = tVsK.getTeam("Kings");
 				
-				/*inventory.addItem(new ItemStack(Material.MONSTER_EGG, 16, (short) 54));
-				inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
+				Score kg = TitansAndKings.getKg();
 				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");*/
+				Score tn = TitansAndKings.getTn();
 				
-				Integer oldscore = kg.getScore();
-				
-				kg.setScore(oldscore + 1);
-				
-				e.setDeathMessage("A Titan has fallen in battle!");
-				
-			}
-			
-			if(pteam.equals(kings)){
-				
-				e.setKeepInventory(true);
-				
-				PlayerInventory inventory = player.getInventory();
-				
-				inventory.clear();
-				
-				/*inventory.addItem(new ItemStack(Material.BLAZE_POWDER, 6));
-				inventory.addItem(new ItemStack(Material.BOOK, 1));
-				inventory.addItem(new ItemStack(Material.ARROW, 64));
-				inventory.addItem(new ItemStack(Material.BOW, 1));
-				inventory.addItem(new ItemStack(Material.GOLD_HELMET, 1));
-				inventory.addItem(new ItemStack(Material.GOLD_BOOTS, 1));
-				inventory.addItem(new ItemStack(Material.GOLD_CHESTPLATE, 1));
-				inventory.addItem(new ItemStack(Material.GOLD_LEGGINGS, 1));
-				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 94 64 181");*/
-				
-				Integer oldscore = tn.getScore();
-				
-				tn.setScore(oldscore + 1);
-				
-				e.setDeathMessage("A King has fallen in battle!");
-				
-				
-			}
-			
-			/*Integer tnscore = tn.getScore();
-			
-			Integer kgscore = kg.getScore();
-			
-			if(tnscore == 5 | kgscore == 5){
-				
-				if(tnscore == 5){
+				if(pteam == null){
 					
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tell " + pname + " Hey, you died.");
+					
+				}
+				
+				if(pteam.equals(titans)){
+					
+					e.setKeepInventory(true);
+					
+					PlayerInventory inventory = player.getInventory();
+					
+					inventory.clear();
+					
+					/*inventory.addItem(new ItemStack(Material.MONSTER_EGG, 16, (short) 54));
+					inventory.addItem(new ItemStack(Material.RABBIT_FOOT,6));
+					
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");*/
+					
+					Integer oldscore = kg.getScore();
+					
+					kg.setScore(oldscore + 1);
+					
+					e.setDeathMessage("A Titan has fallen in battle!");
+					
+				}
+				
+				if(pteam.equals(kings)){
+					
+					e.setKeepInventory(true);
+					
+					PlayerInventory inventory = player.getInventory();
+					
+					inventory.clear();
+					
+					/*inventory.addItem(new ItemStack(Material.BLAZE_POWDER, 6));
+					inventory.addItem(new ItemStack(Material.BOOK, 1));
+					inventory.addItem(new ItemStack(Material.ARROW, 64));
+					inventory.addItem(new ItemStack(Material.BOW, 1));
+					inventory.addItem(new ItemStack(Material.GOLD_HELMET, 1));
+					inventory.addItem(new ItemStack(Material.GOLD_BOOTS, 1));
+					inventory.addItem(new ItemStack(Material.GOLD_CHESTPLATE, 1));
+					inventory.addItem(new ItemStack(Material.GOLD_LEGGINGS, 1));
+					
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 94 64 181");*/
+					
+					Integer oldscore = tn.getScore();
+					
+					tn.setScore(oldscore + 1);
+					
+					e.setDeathMessage("A King has fallen in battle!");
 					
 					
 				}
 				
-			}*/
+				
+				
+				
+				
+				/*Integer tnscore = tn.getScore();
+				
+				Integer kgscore = kg.getScore();
+				
+				if(tnscore == 5 | kgscore == 5){
+					
+					if(tnscore == 5){
+						
+						
+						
+					}
+					
+				}*/
 			
-			
+			}
 		}
 		
 		@EventHandler
@@ -402,18 +439,22 @@ public class PlayerListener implements Listener{
 			
 			Player player = (Player) e.getEntity();
 			
-			Scoreboard tVsK = TitansAndKings.getTVsK();
+			World tvk = Bukkit.getWorld("tvk");
 			
-			Team team = tVsK.getPlayerTeam(player);
+			if(player.getWorld().equals(tvk)){
 			
-			Team titans = tVsK.getTeam("Titans");
-			
-			Team kings = tVsK.getTeam("Kings");
-			
-			if(team.equals(titans) | team.equals(kings)){
-			e.setCancelled(true);
+				Scoreboard tVsK = TitansAndKings.getTVsK();
+				
+				Team team = tVsK.getPlayerTeam(player);
+				
+				Team titans = tVsK.getTeam("Titans");
+				
+				Team kings = tVsK.getTeam("Kings");
+				
+				if(team.equals(titans) | team.equals(kings)){
+				e.setCancelled(true);
+				}
 			}
-			
 		}
 }
 
