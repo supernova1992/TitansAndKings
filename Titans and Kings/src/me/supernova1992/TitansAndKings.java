@@ -218,13 +218,17 @@ public class TitansAndKings extends JavaPlugin {
 				PlayerInventory inventory = player.getInventory();
 				
 				inventory.clear();
+				player.getInventory().setHelmet(new ItemStack (Material.AIR));
+	            player.getInventory().setChestplate(new ItemStack (Material.AIR));
+	            player.getInventory().setLeggings(new ItemStack (Material.AIR));
+	            player.getInventory().setBoots(new ItemStack (Material.AIR));
 				
 				player.setMaxHealth(20);
 				
 				player.setHealth(20);
 				
 				String pname = player.getPlayerListName();
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " world");
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " grumblecraft");
 				
 				titans.removePlayer(player);
 			
@@ -241,6 +245,10 @@ public class TitansAndKings extends JavaPlugin {
 				PlayerInventory inventory = player.getInventory();
 				
 				inventory.clear();
+				player.getInventory().setHelmet(new ItemStack (Material.AIR));
+	            player.getInventory().setChestplate(new ItemStack (Material.AIR));
+	            player.getInventory().setLeggings(new ItemStack (Material.AIR));
+	            player.getInventory().setBoots(new ItemStack (Material.AIR));
 				
 				player.setMaxHealth(20);
 				
@@ -248,7 +256,7 @@ public class TitansAndKings extends JavaPlugin {
 				
 				
 				String pname = player.getPlayerListName();
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " world");
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + pname + " grumblecraft");
 				
 				kings.removePlayer(player);
 				
