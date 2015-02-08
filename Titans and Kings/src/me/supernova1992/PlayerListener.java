@@ -2,6 +2,10 @@ package me.supernova1992;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R1.PlayerConnection;
@@ -49,6 +53,20 @@ public class PlayerListener implements Listener{
 			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 			
 	}
+	
+	public static String readFile(String path, Charset encoding) 
+			  {
+				try{
+			    	byte[] encoded = Files.readAllBytes(Paths.get(path));
+			    	return new String(encoded, encoding);
+				} catch (IOException event){
+					
+					event.printStackTrace();
+					
+					return new String(null, encoding);
+				}
+			    	
+			  }
 	
 		@EventHandler
 		public void onLogin(PlayerJoinEvent e){
@@ -324,6 +342,12 @@ public class PlayerListener implements Listener{
 			World world = player.getWorld();
 			
 			World tvk = Bukkit.getWorld("tvk");
+			
+			 String path = "plugins/TitansAndKings/users/"+player.getName()+".yml" ;
+			
+			String dpart = readFile(path, StandardCharsets.UTF_8);
+			
+			Bukkit.getServer().dispatchCommand(player, "particle " + dpart + " ~ ~ ~ 0 0 0 0");
 			
 			if(world.equals(tvk)){
 			
