@@ -11,6 +11,7 @@ import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -100,10 +101,13 @@ public class TitansAndKings extends JavaPlugin {
 			
 			kg.setScore(0);
 			
-			for(Player online : Bukkit.getOnlinePlayers()){
-				online.setScoreboard(tVsK);
-				}
+			World tvk = Bukkit.getServer().getWorld("tvk");
+			if (player.getWorld().equals(tvk)){
 			
+				for(Player online : Bukkit.getOnlinePlayers()){
+					online.setScoreboard(tVsK);
+					}
+			}
 			return true;
 		}
 		
@@ -142,7 +146,9 @@ public class TitansAndKings extends JavaPlugin {
 				
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 80 64 7");
 				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 2 "+ pname);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
+				
+				player.setScoreboard(tVsK);
 			}else{
 				player.sendMessage(ChatColor.RED + "You are already on a team. To change teams use /leave and either /titan or /king");
 				
@@ -191,7 +197,10 @@ public class TitansAndKings extends JavaPlugin {
 				
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tp "+ pname + " 94 70 184");
 				
-				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 2 "+ pname);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
+				
+				player.setScoreboard(tVsK);
+				
 			}else{
 				
 				player.sendMessage(ChatColor.RED + "You are already on a team. To change teams use /leave and either /titan or /king");
@@ -236,7 +245,7 @@ public class TitansAndKings extends JavaPlugin {
 				
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
 				
-				
+				player.setScoreboard(manager.getNewScoreboard());
 				
 			
 			}
@@ -264,6 +273,8 @@ public class TitansAndKings extends JavaPlugin {
 				
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
 				
+				player.setScoreboard(manager.getNewScoreboard());
+				
 				
 			}
 			
@@ -273,7 +284,7 @@ public class TitansAndKings extends JavaPlugin {
 				
 				Player player = sender.getServer().getPlayer(args[0]);
 				
-				File file = new File("plugins"+File.separator+"TitansAndKings"+File.separator+"users"+File.separator+player.getDisplayName()+".yml");
+				File file = new File("plugins"+File.separator+"TitansAndKings"+File.separator+"users"+File.separator+player.getPlayerListName()+".yml");
 				
 				try {
 	                

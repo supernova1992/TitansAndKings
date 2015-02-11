@@ -71,15 +71,15 @@ public class PlayerListener implements Listener{
 		@EventHandler
 		public void onLogin(PlayerJoinEvent e){
 			
-			Player player = e.getPlayer();
+			//Player player = e.getPlayer();
 			
 			//ScoreboardManager manager = Bukkit.getScoreboardManager();
 			
-			Scoreboard tVsK = TitansAndKings.getTVsK();
+			//Scoreboard tVsK = TitansAndKings.getTVsK();
 			
 			
 			
-			player.setScoreboard(tVsK);
+			//player.setScoreboard(tVsK);
 			
 			try {
                 File file = new File("plugins"+File.separator+"TitansAndKings"+File.separator+"users"+File.separator+e.getPlayer().getName()+".yml");
@@ -150,75 +150,79 @@ public class PlayerListener implements Listener{
 			
 			Scoreboard tVsK = TitansAndKings.getTVsK();
 			
-			if (e.getDamager() instanceof Arrow && e.getEntity() instanceof Player){
-				
-				/*ItemStack arrow = new ItemStack(Material.BOW);*/
-				
-				Entity damager =  e.getDamager();
-				
-				Player damaged = (Player) e.getEntity();
-				
-				//Team pteam = tVsK.getPlayerTeam(player);
-				
-				Team dteam = tVsK.getPlayerTeam(damaged);
-				
-				Team titans = tVsK.getTeam("Titans");
-				
-				if(dteam.equals(titans) && damager instanceof Arrow){
-					
-					damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1));
-					
-					damaged.sendMessage("hit");
-					
-					e.setCancelled(true);
-					
-					
-				}
-				
-				
-			}
+			World tvk = Bukkit.getWorld("tvk");
 			
-			if(e.getEntity() instanceof Player && tVsK.getPlayerTeam((Player) e.getEntity()).equals(tVsK.getTeam("Titans")) && !(e.getDamager() instanceof Player)){
-				
-				e.setCancelled(true);
-			}
+			if(e.getEntity().getWorld().equals(tvk)){ 
 			
-			
-			if(e.getDamager() instanceof Player && e.getEntity() instanceof Player){
-				
-				Player player = (Player) e.getDamager();
-				
-				Player damaged = (Player) e.getEntity();
-				
-				Team pteam = tVsK.getPlayerTeam(player);
-				
-				Team dteam = tVsK.getPlayerTeam(damaged);
-				
-				Team titans = tVsK.getTeam("Titans");
-				
-				if (dam == DamageCause.ENTITY_ATTACK){
-					//ItemStack hold = ((HumanEntity) player).getInventory().getItemInHand();
-					ItemStack eb = new ItemStack(Material.BOOK);
+				if (e.getDamager() instanceof Arrow && e.getEntity() instanceof Player){
 					
-					if(((HumanEntity) player).getItemInHand().equals(eb) && dteam.equals(titans)){
+					/*ItemStack arrow = new ItemStack(Material.BOW);*/
+					
+					Entity damager =  e.getDamager();
+					
+					Player damaged = (Player) e.getEntity();
+					
+					//Team pteam = tVsK.getPlayerTeam(player);
+					
+					Team dteam = tVsK.getPlayerTeam(damaged);
+					
+					Team titans = tVsK.getTeam("Titans");
+					
+					if(dteam.equals(titans) && damager instanceof Arrow){
 						
-						e.setCancelled(false);
+						damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1));
 						
-		
-					}else{
-						
-						damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 50, 1));
+						damaged.sendMessage("hit");
 						
 						e.setCancelled(true);
+						
+						
 					}
 					
 					
 				}
 				
-				
+				if(e.getEntity() instanceof Player && tVsK.getPlayerTeam((Player) e.getEntity()).equals(tVsK.getTeam("Titans")) && !(e.getDamager() instanceof Player)){
 					
+					e.setCancelled(true);
 				}
 				
+				
+				if(e.getDamager() instanceof Player && e.getEntity() instanceof Player){
+					
+					Player player = (Player) e.getDamager();
+					
+					Player damaged = (Player) e.getEntity();
+					
+					Team pteam = tVsK.getPlayerTeam(player);
+					
+					Team dteam = tVsK.getPlayerTeam(damaged);
+					
+					Team titans = tVsK.getTeam("Titans");
+					
+					if (dam == DamageCause.ENTITY_ATTACK){
+						//ItemStack hold = ((HumanEntity) player).getInventory().getItemInHand();
+						ItemStack eb = new ItemStack(Material.BOOK);
+						
+						if(((HumanEntity) player).getItemInHand().equals(eb) && dteam.equals(titans)){
+							
+							e.setCancelled(false);
+							
+			
+						}else{
+							
+							damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 50, 1));
+							
+							e.setCancelled(true);
+						}
+						
+						
+					}
+					
+					
+						
+					}
+			}
 			}
 			
 			
@@ -343,11 +347,18 @@ public class PlayerListener implements Listener{
 			
 			World tvk = Bukkit.getWorld("tvk");
 			
-			 String path = "plugins/TitansAndKings/users/"+player.getName()+".yml" ;
+			 String path = "plugins/TitansAndKings/users/"+player.getPlayerListName()+".yml" ;
 			
 			String dpart = readFile(path, StandardCharsets.UTF_8);
 			
-			Bukkit.getServer().dispatchCommand(player, "particle " + dpart + " ~ ~ ~ 0 0 0 0");
+			Location loc = player.getLocation();
+			
+			
+			
+			ParticleEffect.fromName(dpart).display( 1.0F, 1.0F, 1.0F, 1.0F, 33, loc, 256D);
+			//ParticleEffect.HEART.display( 1.0F, 1.0F, 1.0F, 1.0F, 33, loc);
+			
+			//Bukkit.getServer().dispatchCommand(player, "particle " + dpart + " ~ ~ ~ 1 1 1 1 100");
 			
 			if(world.equals(tvk)){
 			
