@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R1.PlayerConnection;
 
+import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,11 +48,13 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 public class PlayerListener implements Listener{
-
+	
+	private TitansAndKings plugin;
 	public PlayerListener(TitansAndKings plugin){
 			
 			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 			
+			this.plugin = plugin;
 	}
 	
 	public static String readFile(String path, Charset encoding) 
@@ -67,6 +70,8 @@ public class PlayerListener implements Listener{
 				}
 			    	
 			  }
+	
+	
 	
 		@EventHandler
 		public void onLogin(PlayerJoinEvent e){
@@ -148,7 +153,7 @@ public class PlayerListener implements Listener{
 			
 			DamageCause dam = e.getCause();
 			
-			Scoreboard tVsK = TitansAndKings.getTVsK();
+			Scoreboard tVsK = plugin.getTVsK();
 			
 			World tvk = Bukkit.getWorld("tvk");
 			
@@ -235,7 +240,7 @@ public class PlayerListener implements Listener{
 			if(e.getTarget() instanceof Player){
 				Player player = (Player) e.getTarget();
 				
-				Scoreboard tVsK = TitansAndKings.getTVsK();
+				Scoreboard tVsK = plugin.getTVsK();
 				
 				Team pteam = tVsK.getPlayerTeam(player);				
 				
@@ -257,7 +262,7 @@ public class PlayerListener implements Listener{
 			if(e.getEntity() instanceof Player){
 				Player player = (Player) e.getEntity();
 				
-				Scoreboard tVsK = TitansAndKings.getTVsK();
+				Scoreboard tVsK = plugin.getTVsK();
 				
 				Team pteam = tVsK.getPlayerTeam(player);
 				
@@ -284,7 +289,7 @@ public class PlayerListener implements Listener{
 			
 				String pname = player.getPlayerListName();
 				
-				Scoreboard tVsK = TitansAndKings.getTVsK();
+				Scoreboard tVsK = plugin.getTVsK();
 				
 				Team pteam = tVsK.getPlayerTeam(player);
 				
@@ -366,7 +371,7 @@ public class PlayerListener implements Listener{
 				
 				//Player killer = e.getEntity().getKiller();
 				
-				Scoreboard tVsK = TitansAndKings.getTVsK();
+				Scoreboard tVsK = plugin.getTVsK();
 				
 				Team pteam = tVsK.getPlayerTeam(player);
 				
@@ -374,9 +379,9 @@ public class PlayerListener implements Listener{
 				
 				Team kings = tVsK.getTeam("Kings");
 				
-				Score kg = TitansAndKings.getKg();
+				Score kg = plugin.getKg();
 				
-				Score tn = TitansAndKings.getTn();
+				Score tn = plugin.getTn();
 				
 				if(pteam == null){
 					
@@ -478,7 +483,7 @@ public class PlayerListener implements Listener{
 			
 			if(player.getWorld().equals(tvk)){
 			
-				Scoreboard tVsK = TitansAndKings.getTVsK();
+				Scoreboard tVsK = plugin.getTVsK();
 				
 				Team team = tVsK.getPlayerTeam(player);
 				

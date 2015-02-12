@@ -32,10 +32,33 @@ import org.bukkit.scoreboard.Team;
 
 public class TitansAndKings extends JavaPlugin {
 	
+	
+    private  ScoreboardManager man;// = Bukkit.getScoreboardManager();
+	
+	private  Scoreboard tVsK;// = man.getNewScoreboard();
+	
+	private  Team titans;// = tVsK.registerNewTeam("Titans");
+	
+	private  Team kings;// = tVsK.registerNewTeam("Kings");
+	
+	private  Objective objective;// = tVsK.registerNewObjective("Kills", "playerKillCount");
+	
+	private  Score kg;// = objective.getScore(ChatColor.RED + "King: ");
+	
+	private  Score tn;// = objective.getScore(ChatColor.GREEN + "Titan: ");
+	
 	@Override
 	public void onEnable(){
 		getLogger().info("Hello. Titans and Kings is now functioning!");
 		new PlayerListener(this);
+		
+		man = Bukkit.getScoreboardManager();
+		tVsK = man.getNewScoreboard();
+		titans = tVsK.registerNewTeam("Titans");
+		kings = tVsK.registerNewTeam("Kings");
+		objective = tVsK.registerNewObjective("Kills", "playerKillCount");
+		kg = objective.getScore(ChatColor.RED + "King: ");
+		tn = objective.getScore(ChatColor.GREEN + "Titan: ");
 		
 		
 	}
@@ -45,32 +68,22 @@ public class TitansAndKings extends JavaPlugin {
 		
 	}
 	
-	public static ScoreboardManager manager = Bukkit.getScoreboardManager();
 	
-	public static Scoreboard tVsK = manager.getNewScoreboard();
 	
-	public static Team titans = tVsK.registerNewTeam("Titans");
 	
-	public static Team kings = tVsK.registerNewTeam("Kings");
 	
-	public static Objective objective = tVsK.registerNewObjective("Kills", "playerKillCount");
-	
-	public static Score kg = objective.getScore(ChatColor.RED + "King: ");
-	
-	public static Score tn = objective.getScore(ChatColor.GREEN + "Titan: "); //Get a fake offline player
-	
-	public static Scoreboard getTVsK(){
+	public  Scoreboard getTVsK(){
 		
 		return tVsK;
 		
 	}
 	
-	public static Score getKg(){
+	public  Score getKg(){
 		
 		return kg;
 	}
 	
-	public static Score getTn(){
+	public  Score getTn(){
 		
 		return tn;
 	}
@@ -245,7 +258,7 @@ public class TitansAndKings extends JavaPlugin {
 				
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
 				
-				player.setScoreboard(manager.getNewScoreboard());
+				player.setScoreboard(man.getNewScoreboard());
 				
 			
 			}
@@ -273,7 +286,7 @@ public class TitansAndKings extends JavaPlugin {
 				
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamemode 0 "+ pname);
 				
-				player.setScoreboard(manager.getNewScoreboard());
+				player.setScoreboard(man.getNewScoreboard());
 				
 				
 			}
